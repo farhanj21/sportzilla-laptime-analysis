@@ -1,16 +1,15 @@
-# Sportzilla LapTime Analysis 🏎️
+# Lahore Karting Lap Time Analysis 🏎️
 
-### Sportszilla Last Time Analysis: 1st Decemeber 2025
-### Apex Autdrome Last Time Analysis: 9th December 2025
+### Sportzilla Last Time Analysis: 29th Decemeber 2025
+### Apex Autodrome Last Time Analysis: 9th December 2025
 
-**Sportzilla LapTime Analysis** is a data-analysis project designed to help visualize and gain insights from racing lap-time data.  
-By loading race data (e.g. lap times per driver, split times, etc.) and running our Jupyter notebooks, you can quickly generate statistics, charts, and summaries that help you understand performance, consistency, and trends over time.
+**Lahore Karting Lap Time Analysis** is a data-analysis project designed to help visualize and gain insights from racing lap-time data on tracks we have visited. By loading race data (e.g. lap times per driver, split times, etc.) and running our Jupyter notebooks, you can quickly generate statistics, charts, and summaries that help you understand performance, consistency, and trends over time. This works for the RaceFacer interface only.
 
 ## 📂 Project Structure
-- **data.csv** — CSV file with best lap-time per driver
-- **laptime-analysis.ipynb** — Notebook for cleaning data, exploratory analysis, visualizing lap-time distributions and trends  
-- **race-analysis.ipynb** — Notebook for race-level summaries (fastest lap, average lap time, consistency metrics, driver comparisons)  
-- **race-analysis.html** — Race-analysis notebook for convenient sharing/viewing
+- **{trackname}_scrapper.csv** — Website data scrapper for lap times of each driver from RaceFacer
+- **data_{trackname}.csv** — CSV file with best lap-time per driver
+- **lap-analysis-{trackname}.ipynb** — Notebook for race-level summaries (fastest lap, average lap time, consistency metrics, driver comparisons)  
+- **lap-analysis-{trackname}.html** — Race-analysis notebook for convenient sharing/viewing
 
 ## ✅ Features
 - Clean and preprocess raw lap-time data.  
