@@ -2,8 +2,8 @@ name: Scrape and Sync to MongoDB
 
 on:
   schedule:
-    # Run every 6 hours at minute 0
-    - cron: '0 */6 * * *'
+    # Run daily at 3am Pakistan time (PKT = UTC+5, so 22:00 UTC)
+    - cron: '0 22 * * *'
   workflow_dispatch:  # Allow manual trigger
 
 jobs:
