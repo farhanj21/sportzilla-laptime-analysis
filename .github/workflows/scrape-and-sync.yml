@@ -1,0 +1,64 @@
+name: Scrape and Sync to MongoDB
+
+on:
+  schedule:
+    # Run every 6 hours at minute 0
+    - cron: '0 */6 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  scrape-and-sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install scraper dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r scraper/requirements.txt
+
+      - name: Install Jupyter dependencies
+        run: |
+          pip install jupyter nbconvert selenium webdriver-manager beautifulsoup4
+
+      - name: Set up Chrome
+        uses: browser-actions/setup-chrome@latest
+
+      - name: Run Sportzilla scraper
+        run: |
+          jupyter nbconvert --to notebook --execute "Sportzilla/sportzilla_scrapper.ipynb" --output="sportzilla_scrapper_executed.ipynb"
+        continue-on-error: true
+
+      - name: Run Apex Autodrome scraper
+        run: |
+          jupyter nbconvert --to notebook --execute "Apex Autodrome/apex_autodrome_scrapper.ipynb" --output="apex_autodrome_scrapper_executed.ipynb"
+        continue-on-error: true
+
+      - name: Sync data to MongoDB
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+        run: |
+          python scraper/sync_to_mongodb.py
+
+      - name: Upload logs (if failed)
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: scraper-logs
+          path: |
+            Sportzilla/*.ipynb
+            Apex Autodrome/*.ipynb
+          retention-days: 7
+
+      - name: Notify on completion
+        if: success()
+        run: |
+          echo "✓ Scraping and sync completed successfully!"
+          echo "Timestamp: $(date)"
