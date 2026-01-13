@@ -31,7 +31,18 @@ jobs:
       - name: Set up Chrome
         uses: browser-actions/setup-chrome@latest
 
+      - name: Set up Xvfb (Virtual Display)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb
+          # Start Xvfb on display :99
+          Xvfb :99 -ac -screen 0 1920x1080x24 &
+          sleep 3
+          echo "DISPLAY=:99" >> $GITHUB_ENV
+
       - name: Run Sportzilla scraper
+        env:
+          DISPLAY: :99
         run: |
           cd Sportzilla
           jupyter nbconvert --to notebook --execute "sportzilla_scrapper.ipynb" --output="sportzilla_scrapper_executed.ipynb"
@@ -39,6 +50,8 @@ jobs:
         continue-on-error: true
 
       - name: Run Apex Autodrome scraper
+        env:
+          DISPLAY: :99
         run: |
           cd "Apex Autodrome"
           jupyter nbconvert --to notebook --execute "apex_autodrome_scrapper.ipynb" --output="apex_autodrome_scrapper_executed.ipynb"
